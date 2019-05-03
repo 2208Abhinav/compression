@@ -1,4 +1,5 @@
 package entropy
+
 /**************************************************************************
 	This package will calculate entropy for given data string using:
 	Probability model and iid(independent and identical distribution)
@@ -13,8 +14,8 @@ import (
 
 // DataFrequencyMap will take data from input
 // and prepare a data frequency map.
-func DataFrequencyMap() map[rune]int {
-	frequencyMap := make(map[rune]int)
+func DataFrequencyMap() map[interface{}]int {
+	frequencyMap := make(map[interface{}]int)
 
 	in := bufio.NewReader(os.Stdin)
 
@@ -32,7 +33,7 @@ func DataFrequencyMap() map[rune]int {
 
 // DataProbabilityDistribution will return an array
 // that holds the probability distribution of data
-func DataProbabilityDistribution(dataFreqMap map[rune]int) []float32 {
+func DataProbabilityDistribution(dataFreqMap map[interface{}]int) []float32 {
 	var probabilityDist []float32
 	var totalChars int
 
@@ -50,18 +51,18 @@ func DataProbabilityDistribution(dataFreqMap map[rune]int) []float32 {
 // Entropy will calculate the entropy for given
 // data frequency map and return float32 value
 // which represents entropy as (x)bits/sample
-func Entropy(dataFreqMap map[rune]int) float32 {
+func Entropy(dataFreqMap map[interface{}]int) float32 {
 	var entropy float32
 
 	probDist := DataProbabilityDistribution(dataFreqMap)
 
 	// entropy = sigma(-P(Ai)log(P(Ai)))
 	/*
-		 base of log  |   unit of entropy
-		      2       |    bits/sample
-		      e       |    nats/sample
-		      10      |   hartleys/sample
-	 */
+	 base of log  |   unit of entropy
+	      2       |    bits/sample
+	      e       |    nats/sample
+	      10      |   hartleys/sample
+	*/
 
 	for _, probability := range probDist {
 		entropy -= probability * float32(math.Log2(float64(probability)))
