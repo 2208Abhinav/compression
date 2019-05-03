@@ -65,12 +65,24 @@ func getDataForUsageMode() []byte {
 	in := bufio.NewReader(os.Stdin)
 	filePath, _ := in.ReadString('\n')
 
-	// correctFilePath is corrected file path that we get after
-	// altering the path obtained by drag and drop action of user
-	// in terminal. correctFilePath is created by removing newline
-	// character at the end and two single quote character in the
-	// beginning and before newline character.
-	correctFilePath := filePath[1 : len(filePath)-2]
+	correctFilePath := ""
+	quoteCount := 0
+
+	// The following code will find the correct path on
+	// all operating systems.
+	for _, pathChar := range filePath {
+		if string(pathChar) == "'" {
+			quoteCount++
+			continue
+		}
+		if quoteCount == 2 {
+			break
+		}
+		if pathChar == '\n' {
+			continue
+		}
+		correctFilePath += string(pathChar)
+	}
 
 	data := getFileData(correctFilePath)
 	return data
