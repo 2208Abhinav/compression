@@ -14,13 +14,13 @@ import (
 	"os"
 )
 
-func getStringData() string {
+func getStringData() []byte {
 	in := bufio.NewReader(os.Stdin)
 
 	// \n is also included in the data.
 	line, _ := in.ReadString('\n')
 
-	return line
+	return []byte(line)
 }
 
 func getFileData(path string) []byte {
@@ -41,8 +41,8 @@ func getFileData(path string) []byte {
 
 // DataFrequencyMap will take data from input
 // and prepare a data frequency map.
-func DataFrequencyMap() map[interface{}]int {
-	frequencyMap := make(map[interface{}]int)
+func DataFrequencyMap() map[byte]int {
+	frequencyMap := make(map[byte]int)
 
 	data := getStringData()
 
@@ -57,7 +57,7 @@ func DataFrequencyMap() map[interface{}]int {
 
 // DataProbabilityDistribution will return an array
 // that holds the probability distribution of data
-func DataProbabilityDistribution(dataFreqMap map[interface{}]int) []float32 {
+func DataProbabilityDistribution(dataFreqMap map[byte]int) []float32 {
 	var probabilityDist []float32
 	var totalChars int
 
@@ -75,7 +75,7 @@ func DataProbabilityDistribution(dataFreqMap map[interface{}]int) []float32 {
 // Entropy will calculate the entropy for given
 // data frequency map and return float32 value
 // which represents entropy as (x)bits/sample
-func Entropy(dataFreqMap map[interface{}]int) float32 {
+func Entropy(dataFreqMap map[byte]int) float32 {
 	var entropy float32
 
 	probDist := DataProbabilityDistribution(dataFreqMap)
