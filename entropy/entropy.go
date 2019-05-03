@@ -12,17 +12,23 @@ import (
 	"os"
 )
 
-// DataFrequencyMap will take data from input
-// and prepare a data frequency map.
-func DataFrequencyMap() map[interface{}]int {
-	frequencyMap := make(map[interface{}]int)
-
+func getStringData() string {
 	in := bufio.NewReader(os.Stdin)
 
 	// \n is also included in the data.
 	line, _ := in.ReadString('\n')
 
-	for _, char := range line {
+	return line
+}
+
+// DataFrequencyMap will take data from input
+// and prepare a data frequency map.
+func DataFrequencyMap() map[interface{}]int {
+	frequencyMap := make(map[interface{}]int)
+
+	data := getStringData()
+
+	for _, char := range data {
 		// Initially the value is 0 for all characters and we
 		// increase it by 1 whenever we encounter the character.
 		frequencyMap[char] += 1
