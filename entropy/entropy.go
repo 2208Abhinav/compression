@@ -20,7 +20,7 @@ func getStringData() []byte {
 	// \n is also included in the data.
 	line, _ := in.ReadString('\n')
 
-	return []byte(line)
+	return []byte(line[:len(line)-1])
 }
 
 func getFileData(path string) []byte {
