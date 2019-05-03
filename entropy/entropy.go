@@ -8,6 +8,8 @@ package entropy
 
 import (
 	"bufio"
+	"fmt"
+	"io/ioutil"
 	"math"
 	"os"
 )
@@ -19,6 +21,22 @@ func getStringData() string {
 	line, _ := in.ReadString('\n')
 
 	return line
+}
+
+func getFileData(path string) []byte {
+	file, err := os.Open(path)
+	if err != nil {
+		fmt.Println("Something wrong happened while opening the file.")
+		os.Exit(1)
+	}
+
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Println("Something wrong happened while reading data from file.")
+		os.Exit(2)
+	}
+
+	return data
 }
 
 // DataFrequencyMap will take data from input
