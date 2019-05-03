@@ -39,12 +39,49 @@ func getFileData(path string) []byte {
 	return data
 }
 
+func getDataForUsageMode() []byte {
+	var mode int
+
+	fmt.Println("(1) Find entropy of text entered in terminal.")
+	fmt.Println("(2) Find entropy of file.")
+	fmt.Println("Enter the corresponding number and hit enter.")
+
+	_, err := fmt.Scan(&mode)
+	if err != nil {
+		fmt.Println("Something wrong happened. Please try again")
+		os.Exit(1)
+	}
+
+	if mode != 1 && mode != 2 {
+		fmt.Println("There is no mode for this number.")
+		os.Exit(2)
+	}
+
+	if mode == 1 {
+		data := getStringData()
+		return data
+	}
+	fmt.Println("Drag and drop the file in terminal and then hit enter.")
+	in := bufio.NewReader(os.Stdin)
+	filePath, _ := in.ReadString('\n')
+
+	// correctFilePath is corrected file path that we get after
+	// altering the path obtained by drag and drop action of user
+	// in terminal. correctFilePath is created by removing newline
+	// character at the end and two single quote character in the
+	// beginning and before newline character.
+	correctFilePath := filePath[1 : len(filePath)-2]
+
+	data := getFileData(correctFilePath)
+	return data
+}
+
 // DataFrequencyMap will take data from input
 // and prepare a data frequency map.
 func DataFrequencyMap() map[byte]int {
 	frequencyMap := make(map[byte]int)
 
-	data := getStringData()
+	data := getDataForUsageMode()
 
 	for _, char := range data {
 		// Initially the value is 0 for all characters and we
